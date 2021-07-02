@@ -3,6 +3,8 @@ from datetime import date
 
 
 class MongoDBManager:
+    """Class which works with mongodb database to ensure encapsulation."""
+
     def __init__(self, link):
         """Establishing connection with database"""
         self._client = pymongo.MongoClient(link)
@@ -50,6 +52,7 @@ class MongoDBManager:
         return self._client.DarkBot.Orders.find_one({"_id": user_id}) is not None
 
     def update_current_order(self, user_id, product=None, amount=None):
+        """Updates current order of the user with the following id. (Then it will be transferred to Orders collection)"""
         if amount is None and product is None:
             return
         if amount is None:
@@ -67,18 +70,27 @@ class MongoDBManager:
                                                        }}}, upsert=True)
 
     def get_current_order(self, user_id):
+        """Returns current order of the user with the following id."""
         return self._client.DarkBot.UserStates.find_one({"_id": user_id})["current_order"]
 
     def create_user(self, user_id, order, def_checkpoint):
+        """Creates user in the Orders collection
+           :param user_id: id of the user
+           :param order: first order of the user
+           :param def_checkpoint: state, where user will be returned after clicking "Back to menu"
+        """
         self._client.DarkBot.Orders.insert_one({"_id": user_id, "orders": [order], "checkpoint": def_checkpoint})
 
     def delete_user(self, user_id):
+        """Deletes user with the following id in the Orders collection"""
         self._client.DarkBot.Orders.delete_one({"_id": user_id})
 
     def get_user(self, user_id):
+        """Returns user with the following id from the Orders collection"""
         return dict(self._client.DarkBot.Orders.find_one({"_id": user_id}))
 
     def add_order(self, user_id, order):
+        """Adds order to the user in the Orders collection"""
         self._client.DarkBot.Orders.update_one({"_id": user_id}, {"$push": {"orders": order}})
 
     def update_phone_number(self, user_id, phone_number):
@@ -97,12 +109,14 @@ class MongoDBManager:
         return self._client.DarkBot.Orders.find_one({"_id": user_id})["desires"]
 
     def get_all_orders(self, user_id):
+        """Returns all orders, made by user"""
         orders = self._client.DarkBot.Orders.find_one({"_id": user_id})
         if orders is None:
             return {}
         return orders["orders"]
 
     def count_total_sum(self, user_id):
+        """Counts total sum of all user orders"""
         orders = self.get_all_orders(user_id)
         result = 0
         for order in orders:

@@ -2,6 +2,7 @@ from re import match
 
 
 class IOManager:
+    """Class containing only static methods which allow to comfortably process input and output"""
     @staticmethod
     def get_products(products):
         """Returns a string, containing info about all available products"""
@@ -18,6 +19,7 @@ class IOManager:
 
     @staticmethod
     def get_all_orders(orders, total_sum):
+        """Returns a string which describes the cart of the user"""
         if len(orders) == 0:
             return "Ваша корзина пуста."
         result = ["Ваша корзина выглядит так:"]
@@ -28,6 +30,7 @@ class IOManager:
 
     @staticmethod
     def check_phone_number(in_str):
+        """Checks whether phone_number was entered in the correct format"""
         if match("\+[7]\d{10}", in_str) and len(in_str) == 12:
             return in_str[0:2] + "-" + in_str[2:5] + "-" + in_str[5:8] + "-" + in_str[8:10] + "-" + in_str[10:12]
         if match("\+[7][-]\d{3}[-]\d{3}[-]\d{2}[-]\d{2}", in_str) and len(in_str) == 16:
@@ -36,6 +39,7 @@ class IOManager:
 
     @staticmethod
     def get_contact_info(user):
+        """Returns a string containing contact information of the user"""
         if user == {}:
             result = ["Произошла ошибка, пользователь не найден. Пожалуйста, повторите заказ.",
                       "Приносим извинения за неудобства!"]

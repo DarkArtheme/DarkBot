@@ -2,6 +2,8 @@ from telebot import *
 
 
 class ButtonProcessor:
+    """This class was created in order to simplify code in main.py. All its methods process button clicks in different states."""
+
     def __init__(self, bot, mongo, buttons_text, states, messages):
         self.bot = bot
         self.mongo = mongo
