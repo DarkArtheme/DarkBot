@@ -8,6 +8,7 @@ This is the small demo of the telegram bot that was written in order to show the
 
 ---
 
+Данный бот демонстрирует ключевые возможности API, среди которых - отправка различных видов сообщений, ведение диалога с пользователем и заполнение формы для данных.
 
 </span>
 
